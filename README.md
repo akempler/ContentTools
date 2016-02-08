@@ -13,7 +13,7 @@ This module contains some of the tweaks I use.
 Normally these tweaks were fairly specific to the customer's theme and other site specific requirements but I've tried to abstract some of that out and make it more generic.  
 
 
-** So what does it do? It adds three new components: **
+**So what does it do? It adds three new components:**
 
 ### Create Content:
 This block adds a + icon providing quick access to create content. Generally I add this to the top of a sidebar. Clicking on it reveals a dropdown of content the user can create. These are the same content types that would appear for the user if they went to /node/add. In other words, only types they have permission to create will be listed there.
