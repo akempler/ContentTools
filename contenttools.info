@@ -1,0 +1,6 @@
+name = contenttools
+description = Provide enhanced content navigation and other content related tools.
+core = 7.x
+package = contenttools
+stylesheets[all][] = css/contenttools.css
+scripts[] = js/contenttools.js

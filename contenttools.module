@@ -1,0 +1,328 @@
+<?php
+/**
+ * @file
+ * Provides enhanced node navigation to replace the primary tabs.
+ *
+ * Also provides a floating palette for working with content.
+ * The palette provides some of the administrative form features
+ * normally hidden in the vertical tabs when creating/editing a
+ * node in a floating palette. For example, adding tags,
+ * setting published status, etc.
+ *
+ * @author: Adam Kempler <akempler@gmail.com>
+ */
+
+
+/**
+ * Implements hook_init().
+ *
+ * @todo provide error if fontawesome not found.
+ */
+function contenttools_init() {
+
+  $cdn = variable_get('contentpalette_fontawesome_cdn', 1);
+  if ($cdn) {
+    drupal_add_css('http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css', array(
+      'type' => 'external',
+      'group' => CSS_DEFAULT,
+      'every_page' => TRUE,
+    ));
+  }
+  else {
+    // Check locally for fontawesome.
+    drupal_add_css('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css', array(
+      'group' => CSS_DEFAULT,
+      'every_page' => TRUE,
+    ));
+    // Error if not found.
+  }
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function contenttools_menu() {
+  $items = array();
+  $items['admin/config/user-interface/contenttools'] = array(
+    'title' => 'ContentTools settings',
+    'description' => 'Congigure the ContentTools module',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array(
+      'contenttools_settings_form',
+    ),
+    'access arguments' => array('administer contenttools'),
+    'access callback' => TRUE,
+    'file' => 'contenttools.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function contenttools_permission() {
+  return array(
+      'administer contenttools' => array(
+          'title' => t('Administer the ContentTools module'),
+      ),
+  );
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function contenttools_block_info() {
+  $blocks['contenttools_create'] = array(
+    'info' => t('Create content'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function contenttools_block_view($delta) {
+  $block = array();
+  switch ($delta) {
+
+    case 'contenttools_create':
+      $block['subject'] = t('Create Content');
+      $block['content'] = contentcreate_block();
+      break;
+  }
+  return $block;
+}
+
+
+/**
+ * Implements hook_preprocess_page().
+ *
+ * Adds the content palette to the specified region.
+ * Removes other blocks from that region.
+ */
+function contenttools_preprocess_page(&$vars) {
+
+  // Remove all the sidebar blocks if we are on a node add or edit page.
+  $arg0 = arg(0);
+  $arg1 = arg(1);
+  $arg2 = arg(2);
+  // Whether or not the palette is being displayed.
+  $active = FALSE;
+
+  $region = variable_get('contentpalette_region', '');
+  // TODO May not be a 'node'. Could be another entity type.
+  if ($arg0 == 'node' && ($arg1 == 'add' || $arg2 == 'edit')) {
+
+    $display_palette = variable_get('contentpalette_display', TRUE);
+    $remove_blocks = variable_get('contentpalette_remove_blocks', TRUE);
+
+    // Whether or not the palette is being displayed.
+    $active = TRUE;
+
+    if (array_key_exists($region, $vars['page'])) {
+      // Remove all the blocks from the region.
+      if ($remove_blocks) {
+        foreach ($vars['page'][$region] as $key => $block) {
+          if (is_array($vars['page'][$region][$key]) && isset($vars['page'][$region][$key]['#block'])) {
+            unset($vars['page'][$region][$key]);
+          }
+        }
+      }
+
+      // Add the content palette to the region.
+      if ($display_palette) {
+        $content = array(
+          '#markup' => theme('content_palette'),
+          '#weight' => 40,
+        );
+        //$vars['page'][$region]['palette'] = $content;
+      }
+    }
+  }
+  else {
+    // Display the node management icons.
+    $args = array();
+    if (isset($vars['node'])) {
+      $args['node'] = $vars['node'];
+    }
+
+    $content = array(
+      '#markup' => theme('contentnav', $args),
+      '#weight' => 40,
+    );
+    // Add the icons for managing the node to the top of the page content.
+    array_unshift($vars['page']['content'], $content);
+  }
+
+  // TODO check if we are displaying the palette.
+  // The class name gets generated with a dash
+  // instead of underscore (nice, drupal).
+  $regionclass = str_replace('_', '-', $region);
+  // Needed so we don't try to manipulate the dom on
+  // pages that aren't displaying contenttools items.
+  drupal_add_js(array(
+    'contenttools' => array(
+      'contenttoolsactive' => $active,
+      'contentpalette_region' => '.region-' . $regionclass,
+    ),
+  ), array(
+    'type' => 'setting',
+  ));
+
+  // Override the default theme used for the tabs
+  // so we can insert our own html into it.
+  // TODO this wouldn't be necessary if I can figure out
+  // how to modify the "#prefix" being added to the local tasks.
+  $vars['tabs']['#theme'] = 'content_primary_tabs';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function contenttools_theme() {
+  $path = drupal_get_path('module', 'contenttools');
+
+  return array(
+    'content_primary_tabs' => array(
+      // 'render element' => 'form',
+      'template' => 'primary_tabs',
+      // 'file' => 'primary_tabs',
+      'path' => $path . '/theme',
+      'variables' => array(
+        'variables' => NULL,
+      ),
+    ),
+    'contentnav' => array(
+      'template' => 'contentnav',
+      'file' => 'theme.inc',
+      'path' => $path . '/theme',
+      'variables' => array(
+        'node' => NULL,
+      ),
+    ),
+    'contentcreate_icon' => array(
+      'template' => 'contentcreate',
+      'file' => 'theme.inc',
+      'path' => $path . '/theme',
+      'variables' => array(
+        'node' => NULL,
+      ),
+    ),
+    'content_palette' => array(
+      'template' => 'content_palette',
+      'path' => $path . '/theme',
+      'variables' => array(),
+    ),
+  );
+}
+
+
+/**
+ * Display an + icon for creating content.
+ *
+ * @return string
+ *   The html to be displayed.
+ */
+function contentcreate_block() {
+  $out = '';
+
+  $node = menu_get_object();
+  $out .= theme('contentcreate_icon', array('node' => $node));
+
+  return $out;
+}
+
+
+/**
+ * Provide an administrative form for controlling content.
+ *
+ * Duplicates some of the form fields used for nodes,
+ * and provides them in a more accessible format.
+ *
+ * @return string
+ *   html form.
+ */
+function content_palette_form() {
+  $arg0 = arg(0);
+  $arg1 = arg(2);
+  if ($arg0 == 'node' && $arg1 == 'edit') {
+    // if($arg0 =='node' && ($arg1 == 'add' || $arg1 == 'edit')) {
+    $nid = arg(1);
+    $node = node_load($nid);
+  }
+  else {
+    $type = arg(2);
+    $node = new stdClass();
+    $node->type = $type;
+    node_object_prepare($node);
+  }
+
+  $form = array();
+
+  $form['published'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Publish'),
+    '#default_value' => $node->status,
+    '#tree' => FALSE,
+  );
+
+  $form['promoted'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Promoted to front page'),
+    '#default_value' => $node->promote,
+    '#tree' => FALSE,
+  );
+
+  $tags = array();
+  if (isset($node->field_tags['und'])) {
+    foreach ($node->field_tags['und'] as $item) {
+      $tags[$item['tid']] = isset($item['taxonomy_term']) ? $item['taxonomy_term'] : taxonomy_term_load($item['tid']);
+    }
+  }
+
+  $form['tags'] = array(
+    '#type' => 'textfield',
+    '#default_value' => taxonomy_implode_tags($tags),
+    '#title' => 'Add Tags',
+    '#autocomplete_path' => 'taxonomy/autocomplete/field_tags',
+    '#maxlength' => 1024,
+    '#element_validate' => array(
+      'taxonomy_autocomplete_validate',
+    ),
+    '#description' => 'Enter a comma-separated list of words to describe your content.',
+    '#size' => 30,
+  );
+
+  $form['save2'] = array(
+    '#type' => 'submit',
+    '#value' => t('Save'),
+    '#weight' => 15,
+    '#attributes' => array(
+    // 'onclick' => 'contentnav_publish_submit',
+    ),
+  );
+  // '#executes_submit_callback' => FALSE!
+  // Stops it from submitting, but nothing works.
+  $form['#attributes'] = array(
+    'onsubmit' => 'return false',
+  );
+
+  return $form;
+}
+
+
+/**
+ * Implements hook_contextual_links_view_alter().
+ *
+ * Hiding the contextual tools from the Contenttools Create block
+ * because it overlaps the icon and makes the ui awkward.
+ */
+function contenttools_contextual_links_view_alter(&$element, &$items) {
+  if (isset($element['#element']['#block']) && $element['#element']['#block']->delta == 'contenttools_create') {
+    unset($element['#links']);
+  }
+}

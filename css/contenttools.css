@@ -1,0 +1,86 @@
+.admin_tabs_toggle {
+  float: right;
+}
+.tabs--primary {
+  display: none;
+}
+
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#nodenav {
+  margin-bottom: 6px;
+}
+
+.page_admin {
+  margin-bottom: 1em;
+}
+.page_admin .glyphicon:empty {
+  width: 1.5em;
+}
+
+.page_admin a {
+  font-size: 1.3em;
+}
+
+h1.page-header {
+  margin-bottom: 0;
+}
+
+.region-sidebar-second {
+  position: relative;
+}
+
+#content-palette-form {
+  position: fixed;
+  top: -140px;
+  background: #fff;
+}
+
+#content-palette-form .form-item-tags .input-group .form-control {
+  width: 200px;
+}
+
+#content-palette-form .form-item-tags .input-group-addon,
+.input-group-btn {
+  width: auto;
+}
+
+.fa {
+  padding-left: 6px;
+}
+
+
+#contenttoolsmodal {
+  display: block;
+  position:absolute;
+  background:url(tint20.png) 0 0 repeat;
+  background:rgba(0,0,0,0.2);
+  border-radius:14px;
+  padding:4px;
+  z-index: 1060;
+}
+#contenttoolsmodal p {
+  padding: 0;
+  margin-bottom:4px;
+}
+
+#modalcontent {
+  border-radius:8px;
+  background:#fff;
+  padding:10px;
+}
+
+#modalclose {
+  position:absolute;
+  background:url(close.png) 0 0 no-repeat;
+  width:24px;
+  height:27px;
+  display:block;
+  text-indent:-9999px;
+  top:-7px;
+  right:-7px;
+}
