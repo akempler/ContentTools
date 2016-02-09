@@ -30,14 +30,14 @@ h1.page-header {
   margin-bottom: 0;
 }
 
-.region-sidebar-second {
-  position: relative;
-}
 
 #content-palette-form {
   position: fixed;
   top: -140px;
   background: #fff;
+  padding: 7px;
+  border-radius: 20px;
+  border: 2px solid #ccc;
 }
 
 #content-palette-form .form-item-tags .input-group .form-control {
@@ -84,3 +84,4 @@ h1.page-header {
   top:-7px;
   right:-7px;
 }
+

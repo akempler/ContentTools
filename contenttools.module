@@ -114,6 +114,7 @@ function contenttools_preprocess_page(&$vars) {
   $active = FALSE;
 
   $region = variable_get('contentpalette_region', '');
+
   // TODO May not be a 'node'. Could be another entity type.
   if ($arg0 == 'node' && ($arg1 == 'add' || $arg2 == 'edit')) {
 
@@ -122,7 +123,6 @@ function contenttools_preprocess_page(&$vars) {
 
     // Whether or not the palette is being displayed.
     $active = TRUE;
-
     if (array_key_exists($region, $vars['page'])) {
       // Remove all the blocks from the region.
       if ($remove_blocks) {
@@ -139,7 +139,7 @@ function contenttools_preprocess_page(&$vars) {
           '#markup' => theme('content_palette'),
           '#weight' => 40,
         );
-        //$vars['page'][$region]['palette'] = $content;
+        $vars['page'][$region]['palette'] = $content;
       }
     }
   }
@@ -159,15 +159,14 @@ function contenttools_preprocess_page(&$vars) {
   }
 
   // TODO check if we are displaying the palette.
-  // The class name gets generated with a dash
-  // instead of underscore (nice, drupal).
-  $regionclass = str_replace('_', '-', $region);
+  //$regionclass = str_replace('_', '-', $region);
+  $regionclass = drupal_region_class($region);
   // Needed so we don't try to manipulate the dom on
   // pages that aren't displaying contenttools items.
   drupal_add_js(array(
     'contenttools' => array(
       'contenttoolsactive' => $active,
-      'contentpalette_region' => '.region-' . $regionclass,
+      'contentpalette_region' => $regionclass,
     ),
   ), array(
     'type' => 'setting',

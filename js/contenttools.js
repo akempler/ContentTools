@@ -12,8 +12,8 @@ jQuery(document).ready(function() {
    */
   if ((typeof Drupal.settings.contenttools.contenttoolsactive != 'undefined') && (Drupal.settings.contenttools.contenttoolsactive)) {
     var region = Drupal.settings.contenttools.contentpalette_region;
-    var palette = jQuery(region);
-    var paletteOffset = jQuery(region).offset().top;
+    var palette = jQuery('.'+region);
+    var paletteOffset = palette.offset().top;
     // The animation was too jerky. Was sliding in from the top but not smoothly.
     //jQuery('#content-palette-form').animate({
     //  top: paletteOffset + 20,
