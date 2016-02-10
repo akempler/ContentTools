@@ -31,7 +31,7 @@ jQuery(document).ready(function() {
     });
   }
   
-  if (jQuery("#edit-title").length) {
+  if (jQuery("#edit-title").val().length > 1) {
     jQuery('html, body').animate({
       //scrollTop: $(".node-form .form-textarea-wrapper").offset().top
       scrollTop: jQuery("#edit-title").offset().top
