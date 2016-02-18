@@ -38,10 +38,12 @@ h1.page-header {
   padding: 7px;
   border-radius: 20px;
   border: 2px solid #ccc;
+  width: auto;
+  z-index: 100;
 }
 
 #content-palette-form .form-item-tags .input-group .form-control {
-  width: 200px;
+  width: auto;
 }
 
 #content-palette-form .form-item-tags .input-group-addon,

@@ -116,7 +116,7 @@ function contenttools_preprocess_page(&$vars) {
   $region = variable_get('contentpalette_region', '');
 
   // TODO May not be a 'node'. Could be another entity type.
-  if ($arg0 == 'node' && ($arg1 == 'add' || $arg2 == 'edit')) {
+  if ($arg0 == 'node' && ($arg1 == 'add' || $arg2 == 'edit') && isset($arg2)) {
 
     $display_palette = variable_get('contentpalette_display', TRUE);
     $remove_blocks = variable_get('contentpalette_remove_blocks', TRUE);
@@ -292,8 +292,8 @@ function content_palette_form() {
     '#element_validate' => array(
       'taxonomy_autocomplete_validate',
     ),
-    '#description' => 'Enter a comma-separated list of words to describe your content.',
-    '#size' => 30,
+    '#description' => 'Enter a comma-separated list<br />of words to describe your content.',
+    '#size' => 25,
   );
 
   $form['save2'] = array(
