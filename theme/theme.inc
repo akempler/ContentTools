@@ -14,7 +14,6 @@ function template_preprocess_contentnav(&$vars) {
 
   $node_options = array();
 
-  // Used for populating a modal.
   if ($vars['node']) {
 
     $account = user_load($vars['node']->uid);

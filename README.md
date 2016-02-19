@@ -13,7 +13,7 @@ This module contains some of the tweaks I use.
 Normally these tweaks were fairly specific to the customer's theme and other site specific requirements but I've tried to abstract some of that out and make it more generic.  
 
 
-**So what does it do? It adds three new components:**
+** So what does it do? It adds three new components: **
 
 ### Create Content:
 This block adds a + icon providing quick access to create content. Generally I add this to the top of a sidebar. Clicking on it reveals a dropdown of content the user can create. These are the same content types that would appear for the user if they went to /node/add. In other words, only types they have permission to create will be listed there.
@@ -32,6 +32,14 @@ Also, for the node palette it only checks if you are using the default tags fiel
 
 The node palette form isn't really able to be overridden at this point because of the way the module is setup. The fields are just duplicates of the existing fields located in the bottom vertical tabs. In fact anything you enter into the floating palette fields is mirrored to the actual fields below. This results in something that is somewhat rigid but was easy and quick to implement and still met my needs.
 
+### Adding links/icons to the Node Tools
+Override template_preprocess_contentnav(&$vars) located in the theme.inc file. This will give you access to an array of $vars['node_options']. 
+For example: 
+```
+function booktools_preprocess_contentnav(&$vars) {
+  var_dump($vars['node_options']);
+}
+```
 
 
 ## Installation:
