@@ -7,20 +7,6 @@
 
 jQuery(document).ready(function() {
 
-  /**
-   * Set the top of the content palette to the top of the region it is being displayed in.
-   */
-  if ((typeof Drupal.settings.contenttools.contenttoolsactive != 'undefined') && (Drupal.settings.contenttools.contenttoolsactive)) {
-    var region = Drupal.settings.contenttools.contentpalette_region;
-    var palette = jQuery('.'+region);
-    var paletteOffset = palette.offset().top;
-    // The animation was too jerky. Was sliding in from the top but not smoothly.
-    //jQuery('#content-palette-form').animate({
-    //  top: paletteOffset + 20,
-    //}, 1000);
-    jQuery('#content-palette-form').css({"top": paletteOffset + 20});
-  }
-
   if (typeof CKEDITOR !== 'undefined') {
 
     CKEDITOR.on('instanceReady', function(e) {
@@ -31,7 +17,7 @@ jQuery(document).ready(function() {
     });
   }
   
-  if (jQuery("#edit-title").val().length > 1) {
+  if (jQuery("#edit-title").length > 0) {
     jQuery('html, body').animate({
       //scrollTop: $(".node-form .form-textarea-wrapper").offset().top
       scrollTop: jQuery("#edit-title").offset().top
@@ -64,7 +50,10 @@ jQuery(document).ready(function() {
         // Mirror the settings in the vertical tabs for the node with the content palette.
         $("#edit-published").prop("checked", $("#edit-status").checked);
         $("#edit-promoted").prop("checked", $("#edit-promote").checked);
-        $("#edit-tags").val($("#edit-field-tags-und").val());
+        // If tags are enabled.
+        if ($("#edit-tags").length > 0) {
+          $("#edit-tags").val($("#edit-field-tags-und").val());
+        }
 
         // Sync changes in palette back to node form fields.
         $("#edit-published").change(function() {
@@ -74,9 +63,11 @@ jQuery(document).ready(function() {
           $("#edit-promote").prop("checked", this.checked);
         });
 
-        $("#edit-tags").change(function() {
-          $("#edit-field-tags-und").val($(this).val());
-        });
+        if ($("#edit-tags").length > 0) {
+          $("#edit-tags").change(function() {
+            $("#edit-field-tags-und").val($(this).val());
+          });
+        }
       }
     }
   };
