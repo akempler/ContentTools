@@ -1,10 +1,7 @@
-name = contenttools
+name = ContentTools
 description = Provide enhanced content navigation and other content related tools.
 core = 7.x
-package = contenttools
-; dependencies[] = book
-; files[] = contenttools.admin.inc
-; files[] = contenttools.module
-; configure = admin/config/contenttools
+package = Content Tools
 stylesheets[all][] = css/contenttools.css
 scripts[] = js/contenttools.js
+configure = admin/config/user-interface/contenttools

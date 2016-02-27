@@ -113,34 +113,21 @@ function contenttools_preprocess_page(&$vars) {
   // Whether or not the palette is being displayed.
   $active = FALSE;
 
-  $region = variable_get('contentpalette_region', '');
-
   // TODO May not be a 'node'. Could be another entity type.
   if ($arg0 == 'node' && ($arg1 == 'add' || $arg2 == 'edit') && isset($arg2)) {
 
     $display_palette = variable_get('contentpalette_display', TRUE);
-    $remove_blocks = variable_get('contentpalette_remove_blocks', TRUE);
-
     // Whether or not the palette is being displayed.
     $active = TRUE;
-    if (array_key_exists($region, $vars['page'])) {
-      // Remove all the blocks from the region.
-      if ($remove_blocks) {
-        foreach ($vars['page'][$region] as $key => $block) {
-          if (is_array($vars['page'][$region][$key]) && isset($vars['page'][$region][$key]['#block'])) {
-            unset($vars['page'][$region][$key]);
-          }
-        }
-      }
 
-      // Add the content palette to the region.
-      if ($display_palette) {
-        $content = array(
-          '#markup' => theme('content_palette'),
-          '#weight' => 40,
-        );
-        $vars['page'][$region]['palette'] = $content;
-      }
+    // Add the content palette to the region.
+    if ($display_palette) {
+      $content = array(
+        '#markup' => theme('content_palette'),
+        '#weight' => 40,
+      );
+
+      array_unshift($vars['page']['content'], $content);
     }
   }
   else {
@@ -158,18 +145,12 @@ function contenttools_preprocess_page(&$vars) {
     array_unshift($vars['page']['content'], $content);
   }
 
-  // TODO check if we are displaying the palette.
-  //$regionclass = str_replace('_', '-', $region);
-  $regionclass = drupal_region_class($region);
-  // Needed so we don't try to manipulate the dom on
-  // pages that aren't displaying contenttools items.
   drupal_add_js(array(
-    'contenttools' => array(
-      'contenttoolsactive' => $active,
-      'contentpalette_region' => $regionclass,
-    ),
+      'contenttools' => array(
+          'contenttoolsactive' => $active,
+      ),
   ), array(
-    'type' => 'setting',
+      'type' => 'setting',
   ));
 
   // Override the default theme used for the tabs
@@ -281,20 +262,20 @@ function content_palette_form() {
     foreach ($node->field_tags['und'] as $item) {
       $tags[$item['tid']] = isset($item['taxonomy_term']) ? $item['taxonomy_term'] : taxonomy_term_load($item['tid']);
     }
-  }
 
-  $form['tags'] = array(
-    '#type' => 'textfield',
-    '#default_value' => taxonomy_implode_tags($tags),
-    '#title' => 'Add Tags',
-    '#autocomplete_path' => 'taxonomy/autocomplete/field_tags',
-    '#maxlength' => 1024,
-    '#element_validate' => array(
-      'taxonomy_autocomplete_validate',
-    ),
-    '#description' => 'Enter a comma-separated list<br />of words to describe your content.',
-    '#size' => 25,
-  );
+    $form['tags'] = array(
+      '#type' => 'textfield',
+      '#default_value' => taxonomy_implode_tags($tags),
+      '#title' => 'Add Tags',
+      '#autocomplete_path' => 'taxonomy/autocomplete/field_tags',
+      '#maxlength' => 1024,
+      '#element_validate' => array(
+        'taxonomy_autocomplete_validate',
+      ),
+      '#description' => 'Enter a comma-separated list<br />of words to describe your content.',
+      '#size' => 25,
+    );
+  }
 
   $form['save2'] = array(
     '#type' => 'submit',

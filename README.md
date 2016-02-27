@@ -24,13 +24,15 @@ I find the primary tabs awkward. Especially because with other modules installed
 The original primary tabs are still accessible via a small triangle button which toggles their visibility.
 
 ### Node Palette:
-The node palette displays some of the most commonly used node form fields in a floating palette. For example, the Publish checkbox, Promoted to Front Page, Tags field, and the Save button. You can place this block in the sidebar and when a user is creating a piece of content they can easily access these fields wherever they are on the page.
+The node palette displays some of the most commonly used node form fields in a floating palette. For example, the Publish checkbox, Promoted to Front Page, Tags field, and the Save button. This block is enabled by default on the Content Tools Configuration page. 
 
 **Some caveats:**
 Since I developed this as a solution for my customers it is somewhat dependent on my toolset. Currently I've been using Twitter Bootstrap as a base theme, for both the front and backend. As such, you may need to tweak the css to get things to look correct based on what theme you are using.
 Also, for the node palette it only checks if you are using the default tags field. If you've made a custom field for these it won't know about it.
 
 The node palette form isn't really able to be overridden at this point because of the way the module is setup. The fields are just duplicates of the existing fields located in the bottom vertical tabs. In fact anything you enter into the floating palette fields is mirrored to the actual fields below. This results in something that is somewhat rigid but was easy and quick to implement and still met my needs.
+
+Tags: Currently this only gets displayed in the palette if you've enabled the existing Drupal default tags field for your node type. If you create your own it won't recognize it (it only looks for a field name of field_tags.
 
 ### Adding links/icons to the Node Tools
 Override template_preprocess_contentnav(&$vars) located in the theme.inc file. This will give you access to an array of $vars['node_options']. 
@@ -48,7 +50,6 @@ function booktools_preprocess_contentnav(&$vars) {
 
 2. Configure the module at:
 /admin/config/user-interface/contenttools
-Specify a region for showing the content palette.
 
 3. Add the Create Content block (optionally) on the block admin page
 This will add a + icon with a dropdown letting users create content.

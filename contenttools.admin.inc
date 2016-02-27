@@ -18,42 +18,13 @@ function contenttools_settings_form() {
     '#description' => t('Check here to use the Font Awesome CDN. Alternatively you can download it locally. See the readme.txt'),
   );
 
-  $use_admin_theme = variable_get('node_admin_theme', '0');
-  if ($use_admin_theme) {
-    $theme = variable_get('admin_theme', 'none');
-  } else {
-    $theme = variable_get('theme_default', 'none');
-  }
-
-  if ($theme != 'none') {
-
-    $form['contentpalette_display'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Display the content palette'),
-      '#default_value' => variable_get('contentpalette_display', 1),
-      '#tree' => FALSE,
-      '#description' => t('Check here to display the content palette'),
-    );
-
-    $regions = system_region_list($theme);
-    array_unshift($regions, "-- Select a Region --");
-
-    $form['contentpalette_region'] = array(
-      '#type' => 'select',
-      '#title' => t('Palette Region'),
-      '#options' => $regions,
-      '#default_value' => variable_get('contentpalette_region', ''),
-      '#description' => t('Select a region to display the content palette in. Usually a sidebar is appropriate.'),
-    );
-
-    $form['contentpalette_remove_blocks'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Remove blocks'),
-      '#default_value' => variable_get('contentpalette_remove_blocks', 1),
-      '#tree' => FALSE,
-      '#description' => t('Check here to remove other blocks from the content palette region when creating/editing a node.'),
-    );
-  }
+  $form['contentpalette_display'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Display the content palette'),
+    '#default_value' => variable_get('contentpalette_display', 1),
+    '#tree' => FALSE,
+    '#description' => t('Check here to display the content palette'),
+  );
 
   return system_settings_form($form);
 }
