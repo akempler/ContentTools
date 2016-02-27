@@ -37,7 +37,7 @@ function template_preprocess_contentnav(&$vars) {
         ));
     }
 
-    if (node_access("update", $vars['node']->nid) === TRUE) {
+    if (node_access("update", $vars['node']) === TRUE) {
       $node_options['edit'] = l(t(''),
         'node/' . $vars['node']->nid . '/edit',
           array(

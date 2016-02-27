@@ -13,7 +13,7 @@ This module contains some of the tweaks I use.
 Normally these tweaks were fairly specific to the customer's theme and other site specific requirements but I've tried to abstract some of that out and make it more generic.  
 
 
-** So what does it do? It adds three new components: **
+**So what does it do? It adds three new components:**
 
 ### Create Content:
 This block adds a + icon providing quick access to create content. Generally I add this to the top of a sidebar. Clicking on it reveals a dropdown of content the user can create. These are the same content types that would appear for the user if they went to /node/add. In other words, only types they have permission to create will be listed there.
@@ -24,9 +24,9 @@ I find the primary tabs awkward. Especially because with other modules installed
 The original primary tabs are still accessible via a small triangle button which toggles their visibility.
 
 ### Node Palette:
-The node palette displays some of the most commonly used node form fields in a floating palette. For example, the Publish checkbox, Promoted to Front Page, Tags field, and the Save button. You can place this block in the sidebar and when a user is creating a piece of content the can easily access these fields wherever they are on the page.
+The node palette displays some of the most commonly used node form fields in a floating palette. For example, the Publish checkbox, Promoted to Front Page, Tags field, and the Save button. You can place this block in the sidebar and when a user is creating a piece of content they can easily access these fields wherever they are on the page.
 
-** Some caveats: **
+**Some caveats:**
 Since I developed this as a solution for my customers it is somewhat dependent on my toolset. Currently I've been using Twitter Bootstrap as a base theme, for both the front and backend. As such, you may need to tweak the css to get things to look correct based on what theme you are using.
 Also, for the node palette it only checks if you are using the default tags field. If you've made a custom field for these it won't know about it.
 
