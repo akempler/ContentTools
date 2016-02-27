@@ -12,8 +12,10 @@
  */
 ?>
 
+<?php if ($add_options): ?>
 <div class="page_admin fa-lg" style="text-align:right;">
 
   <a href="#" title="Add Content"><span id="addcontent" class="fa fa-plus" data-content="<?php print $add_options;?>"></span></a>
 
 </div><!-- END div.page_admin -->
+<?php endif; ?>

@@ -257,10 +257,12 @@ function content_palette_form() {
     '#tree' => FALSE,
   );
 
-  $tags = array();
-  if (isset($node->field_tags['und'])) {
-    foreach ($node->field_tags['und'] as $item) {
-      $tags[$item['tid']] = isset($item['taxonomy_term']) ? $item['taxonomy_term'] : taxonomy_term_load($item['tid']);
+  if (isset($node->field_tags)) {
+    $tags = array();
+    if (isset($node->field_tags['und'])) {
+      foreach ($node->field_tags['und'] as $item) {
+        $tags[$item['tid']] = isset($item['taxonomy_term']) ? $item['taxonomy_term'] : taxonomy_term_load($item['tid']);
+      }
     }
 
     $form['tags'] = array(
