@@ -117,21 +117,36 @@ function contenttools_preprocess_page(&$vars) {
   // Whether or not the palette is being displayed.
   $active = FALSE;
 
-  // TODO May not be a 'node'. Could be another entity type.
   if ($arg0 == 'node' && ($arg1 == 'add' || $arg2 == 'edit') && isset($arg2)) {
 
     $display_palette = variable_get('contentpalette_display', TRUE);
-    // Whether or not the palette is being displayed.
-    $active = TRUE;
-
-    // Add the content palette to the region.
     if ($display_palette) {
-      $content = array(
-        '#markup' => theme('content_palette'),
-        '#weight' => 40,
-      );
 
-      array_unshift($vars['page']['content'], $content);
+      // Prevent displaying the content palette to users without proper permissions.
+      $action = ($arg1 == 'add') ? 'create' : 'edit';
+      $access = FALSE;
+      if ($action == 'edit') {
+        if (node_access("update", $vars['node']) === TRUE) {
+          $access = TRUE;
+        }
+      } else if (node_access("create", $arg2) === TRUE) {
+        $access = TRUE;
+      }
+
+      if ($access) {
+        $display_palette = variable_get('contentpalette_display', TRUE);
+        // Whether or not the palette is being displayed.
+        $active = TRUE;
+
+        // Add the content palette.
+        $content = array(
+          '#markup' => theme('content_palette'),
+          '#weight' => 40,
+        );
+
+        array_unshift($vars['page']['content'], $content);
+
+      }
     }
   }
   else {
