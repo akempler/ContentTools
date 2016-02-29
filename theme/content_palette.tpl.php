@@ -9,5 +9,7 @@
 
 $form = drupal_get_form('content_palette_form');
 
-$out = drupal_render($form);
+$out = '<div id="' . $cssid . '">';
+$out .= drupal_render($form);
+$out .= '</div>';
 print $out;

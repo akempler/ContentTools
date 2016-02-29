@@ -79,7 +79,7 @@ function template_preprocess_contentnav(&$vars) {
 
 
 /**
- * Theme preprocessor for the contentcreate.tpl.php.
+ * Theme preprocessor for contentcreate.tpl.php.
  */
 function template_preprocess_contentcreate_icon(&$vars) {
 
@@ -110,4 +110,12 @@ function template_preprocess_contentcreate_icon(&$vars) {
 
   $add_options = implode('', $create);
   $vars['add_options'] = htmlentities($add_options);
+}
+
+/**
+ * Theme preprocessor for content_palette.tpl.php.
+ */
+function template_preprocess_content_palette(&$vars) {
+  $alignment = variable_get('contentpalette_alignment', 0);
+  $vars['cssid'] = ($alignment) ? 'content-palette-right' : 'content-palette-left';
 }

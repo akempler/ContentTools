@@ -16,7 +16,7 @@ Normally these tweaks were fairly specific to the customer's theme and other sit
 **So what does it do? It adds three new components:**
 
 ### Create Content:
-This block adds a + icon providing quick access to create content. Generally I add this to the top of a sidebar. Clicking on it reveals a dropdown of content the user can create. These are the same content types that would appear for the user if they went to /node/add. In other words, only types they have permission to create will be listed there.
+This block adds a + icon providing quick access to create content. Just add it to a region via the block admin. Clicking on it reveals a dropdown of content the user can create. These are the same content types that would appear for the user if they went to /node/add. In other words, only types they have permission to create will be listed there.
 
 ### Node Tools:
 I find the primary tabs awkward. Especially because with other modules installed they can have options I don't want certain customers to see. I could just hide some of them or fidget with permissions but certain users will still need to access them. Also I find them visually distracting. This component creates a simplified menu of just the menu items everyone needs access to such as node info, edit, and revisions. These are presented as small icons at the top of the node. Additionally, if the book module is installed and the current node is a book page it will provide the ability to create a child page.
@@ -25,6 +25,9 @@ The original primary tabs are still accessible via a small triangle button which
 
 ### Node Palette:
 The node palette displays some of the most commonly used node form fields in a floating palette. For example, the Publish checkbox, Promoted to Front Page, Tags field, and the Save button. This block is enabled by default on the Content Tools Configuration page. 
+
+### Other Tweaks:
+By default drupal displays options for selecting different text formats when creating content. I find this just tends to confuse users that have pemission to create multiple formats. The module collapses the Text Formats fieldset by default. This behavior can be controlled on the module's configuration page. 
 
 **Some caveats:**
 Since I developed this as a solution for my customers it is somewhat dependent on my toolset. Currently I've been using Twitter Bootstrap as a base theme, for both the front and backend. As such, you may need to tweak the css to get things to look correct based on what theme you are using.
@@ -44,7 +47,9 @@ function booktools_preprocess_contentnav(&$vars) {
 ```
 
 
-## Installation:
+## Installation and Requirements:
+
+Requires the jQuery Update module. (jquery 1.6 or greater).
 
 1. Enable the ContentTools module.
 

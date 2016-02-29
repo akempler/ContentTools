@@ -146,11 +146,12 @@ function contenttools_preprocess_page(&$vars) {
   }
 
   drupal_add_js(array(
-      'contenttools' => array(
-          'contenttoolsactive' => $active,
-      ),
+    'contenttools' => array(
+      'contenttoolsactive' => $active,
+      'modulepath' => drupal_get_path('module', 'contenttools'),
+    ),
   ), array(
-      'type' => 'setting',
+    'type' => 'setting',
   ));
 
   // Override the default theme used for the tabs
@@ -196,6 +197,7 @@ function contenttools_theme() {
       'template' => 'content_palette',
       'path' => $path . '/theme',
       'variables' => array(),
+      'file' => 'theme.inc',
     ),
   );
 }
@@ -257,7 +259,8 @@ function content_palette_form() {
     '#tree' => FALSE,
   );
 
-  if (isset($node->field_tags)) {
+  $fields = field_info_instances('node', $node->type);
+  if (isset($fields['field_tags'])) {
     $tags = array();
     if (isset($node->field_tags['und'])) {
       foreach ($node->field_tags['und'] as $item) {

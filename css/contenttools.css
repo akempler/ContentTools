@@ -30,7 +30,29 @@ h1.page-header {
   margin-bottom: 0;
 }
 
-
+#content-palette-left {
+  position: fixed;
+  left: 0px;
+  top: 150px;;
+  background: #fff;
+  padding: 7px;
+  border-radius: 20px;
+  border: 2px solid #ccc;
+  width: auto;
+  z-index: 100;
+}
+#content-palette-right {
+  position: fixed;
+  right: 0px;
+  top: 150px;;
+  background: #fff;
+  padding: 7px;
+  border-radius: 20px;
+  border: 2px solid #ccc;
+  width: auto;
+  z-index: 100;
+}
+/*
 #content-palette-form {
   position: fixed;
   left: 0px;
@@ -42,7 +64,7 @@ h1.page-header {
   width: auto;
   z-index: 100;
 }
-
+*/
 #content-palette-form .form-item-tags .input-group .form-control {
   width: auto;
 }

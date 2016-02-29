@@ -2,6 +2,7 @@ name = ContentTools
 description = Provide enhanced content navigation and other content related tools.
 core = 7.x
 package = Content Tools
+dependencies[] = jquery_update
 stylesheets[all][] = css/contenttools.css
 scripts[] = js/contenttools.js
 configure = admin/config/user-interface/contenttools

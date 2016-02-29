@@ -41,10 +41,11 @@ jQuery(document).ready(function() {
 
         // TODO handle this field not existing.
         // Collapse the filter options under textareas.
-        $('fieldset.filter-wrapper').prepend('<img id="filterexpand" src="/sites/all/modules/contenttools/images/arrow-asc.png" /> Text Formats:')
-        $('fieldset.filter-wrapper div.panel-body').toggle();
+        $('fieldset.filter-wrapper').prepend('<img id="filterexpand" src="' + Drupal.settings.contenttools.modulepath + '/images/arrow-asc.png" /> Text Formats:')
+        $('fieldset.filter-wrapper').find("div").eq(0).toggle();
         $("fieldset.filter-wrapper").bind("click", function() {
-          $('fieldset.filter-wrapper div.panel-body').slideToggle(400);
+          //$('fieldset.filter-wrapper div.panel-body').slideToggle(400);
+          $('fieldset.filter-wrapper').find("div").eq(0).slideToggle(400);
         });
 
         // Mirror the settings in the vertical tabs for the node with the content palette.
