@@ -67,3 +67,7 @@ Generally this would be added to the top of a sidebar.
 You have two easy options for usage:
 1: After enabling the module, go to the settings page for the module and check the "use Font Awesome CDN".
 2: Download font awesome from http://fortawesome.github.io/Font-Awesome/ and extract the contents into contenttools/fontawesome.
+
+### Known Issues:
+
+If you are using the Twitter Bootstrap module, there is a known conflict between the bootsrap tooltip function and the jquery ui tooltip function. Just use the jquery ui tooltip instead and don't manually include the bootstrap tooltip js. If that is not an option let me know in the github issues and I'll create a workaround.
