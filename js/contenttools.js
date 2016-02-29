@@ -7,6 +7,7 @@
 
 jQuery(document).ready(function() {
 
+  // Adjust the height of the ckeditor window.
   if (typeof CKEDITOR !== 'undefined') {
 
     CKEDITOR.on('instanceReady', function(e) {
@@ -30,6 +31,29 @@ jQuery(document).ready(function() {
 (function ($) {
   Drupal.behaviors.contenttools_global = {
     attach: function (context) {
+      
+      $('.contenttools-tooltip').tooltip({
+        
+        content: function () {
+          return $(this).attr('data-content');
+        },
+        items: "span[data-content]",
+        show: "fold",
+        close: function(event, ui)
+        {
+          ui.tooltip.hover(function()
+          {
+             $(this).stop(true).fadeTo(500, 1);
+          },
+          function()
+          {
+             $(this).fadeOut('500', function()
+               {
+                  $(this).remove();
+               });
+            });
+         }
+      });
 
       // Hide the default tabs/local tasks normall displayed for example on a node page. (a triangle to expand them is provided).
       $(".admin_tabs_toggle").bind("click", function() {
@@ -41,12 +65,14 @@ jQuery(document).ready(function() {
 
         // TODO handle this field not existing.
         // Collapse the filter options under textareas.
-        $('fieldset.filter-wrapper').prepend('<img id="filterexpand" src="' + Drupal.settings.contenttools.modulepath + '/images/arrow-asc.png" /> Text Formats:')
-        $('fieldset.filter-wrapper').find("div").eq(0).toggle();
-        $("fieldset.filter-wrapper").bind("click", function() {
-          //$('fieldset.filter-wrapper div.panel-body').slideToggle(400);
-          $('fieldset.filter-wrapper').find("div").eq(0).slideToggle(400);
-        });
+        if ($('#filterexpand').length == 0) {
+          $('fieldset.filter-wrapper').prepend('<img id="filterexpand" src="' + Drupal.settings.contenttools.modulepath + '/images/arrow-asc.png" /> Text Formats:')
+          $('fieldset.filter-wrapper').find("div").eq(0).toggle();
+          $("fieldset.filter-wrapper").bind("click", function() {
+            //$('fieldset.filter-wrapper div.panel-body').slideToggle(400);
+            $('fieldset.filter-wrapper').find("div").eq(0).slideToggle(400);
+          });
+        }
 
         // Mirror the settings in the vertical tabs for the node with the content palette.
         $("#edit-published").prop("checked", $("#edit-status").checked);
@@ -73,6 +99,7 @@ jQuery(document).ready(function() {
     }
   };
 
+  // Content Palette 
   Drupal.behaviors.contenttools_global2 = {
     attach: function (context) {
       var formid = $('.node-form').attr('id');

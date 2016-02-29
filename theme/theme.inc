@@ -12,21 +12,15 @@
  */
 function template_preprocess_contentnav(&$vars) {
 
+  global $user;
   $node_options = array();
 
   if ($vars['node']) {
 
-    $account = user_load($vars['node']->uid);
-    $submitted = t('By !username on !datetime', array(
-      '!username' => theme('username',
-      array(
-        'account' => $account)),
-        '!datetime' => format_date($vars['node']->created, 'custom', 'm/d/y'),
-        ));
-    $node_info = "<span class='submitted'>" . htmlentities($submitted) . '</span>';
-
     // TODO loop through different node types specified as book pages.
     if (isset($vars['node']->book)) {
+      $child_type = variable_get('book_child_type', 'book');
+      if ((user_access('add content to books') || user_access('administer book outlines')) && node_access('create', $child_type) && $vars['node']->book['depth'] < MENU_MAX_DEPTH) {
       $node_options['book_page'] = l(t(''),
         'node/add/book', array(
           'query' => array('parent' => $vars['node']->book['mlid']),
@@ -35,6 +29,7 @@ function template_preprocess_contentnav(&$vars) {
             'class' => array('fa', 'fa-plus-square', 'contentnavicon'),
           ),
         ));
+      }
     }
 
     if (node_access("update", $vars['node']) === TRUE) {
@@ -48,28 +43,38 @@ function template_preprocess_contentnav(&$vars) {
     }
 
     if (isset($vars['node']->book)) {
-      $node_options['print'] = l(t(''),
-        'book/export/html/' . $vars['node']->nid,
-        array(
-          'attributes' => array(
-            'title' => 'Printer friendly',
-            'class' => array('fa fa-print', 'contentnavicon'))));
+      if (user_access('access printer-friendly version')) {
+        $node_options['print'] = l(t(''),
+          'book/export/html/' . $vars['node']->nid,
+          array(
+            'attributes' => array(
+              'title' => 'Printer friendly',
+              'class' => array('fa fa-print', 'contentnavicon'))));
+      }
     }
 
-    // TODO should probably check for permission to access revisions.
-    // Though if they don't have permission they will be stopped at
-    // the next screen.
-    if (db_query('SELECT COUNT(vid) FROM {node_revision} WHERE nid = :nid' , array (':nid' => $vars['node']->nid))->fetchField() > 1) {
-      $node_options['revisions'] = l(t(''),
-        'node/' . $vars['node']->nid . '/revisions',
-        array(
-          'attributes' => array(
-            'title' => 'Revisions',
-            'class' => array('fa fa-history', 'contentnavicon'))));
+    if (user_access('view revisions', $user)) {
+      if (db_query('SELECT COUNT(vid) FROM {node_revision} WHERE nid = :nid' , array (':nid' => $vars['node']->nid))->fetchField() > 1) {
+        $node_options['revisions'] = l(t(''),
+          'node/' . $vars['node']->nid . '/revisions',
+          array(
+            'attributes' => array(
+              'title' => 'Revisions',
+              'class' => array('fa fa-history', 'contentnavicon'))));
+      }
     }
 
-    $node_options['info'] = '<a href="#" title="Page info"><span class="fa fa-info-circle" data-container="body" data-toggle="popover" data-html="true" data-placement="bottom" data-content="' . $node_info . '"></span></a>';
-
+    if (user_access('view contenttools nodeinfo') || node_access("update", $vars['node']) === TRUE) {
+      $account = user_load($vars['node']->uid);
+      $submitted = t('By !username on !datetime', array(
+        '!username' => theme('username',
+          array(
+            'account' => $account)),
+        '!datetime' => format_date($vars['node']->created, 'custom', 'm/d/y'),
+      ));
+      $node_info = "<span class='submitted'>" . htmlentities($submitted) . '</span>';
+      $node_options['info'] = '<a href="#" title="Node info"><span class="fa fa-info-circle contenttools-tooltip" data-content="' . $node_info . '"></span></a>';
+    }
 
   } // END if($vars['node'])
 
@@ -99,15 +104,18 @@ function template_preprocess_contentcreate_icon(&$vars) {
     }
   }
 
+
   // TODO Use book module to get the book types.
   if (isset($vars['node']) && isset($vars['node']->book)) {
-    $create['book_page'] = '<p>' . l(t('Child Book Page'),
-      'node/add/book', array(
-        'query' => array('parent' => $vars['node']->book['mlid']),
-        'attributes' => array('title' => 'Add Page'),
-      )) . '</p>';
+    $child_type = variable_get('book_child_type', 'book');
+    if ((user_access('add content to books') || user_access('administer book outlines')) && node_access('create', $child_type) && $vars['node']->book['depth'] < MENU_MAX_DEPTH) {
+      $create['book_page'] = '<p>' . l(t('Child Book Page'),
+        'node/add/book', array(
+          'query' => array('parent' => $vars['node']->book['mlid']),
+          'attributes' => array('title' => 'Add Page'),
+        )) . '</p>';
+    }
   }
-
   $add_options = implode('', $create);
   $vars['add_options'] = htmlentities($add_options);
 }

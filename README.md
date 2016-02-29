@@ -52,7 +52,7 @@ function booktools_preprocess_contentnav(&$vars) {
 
 ## Installation and Requirements:
 
-Requires the jQuery Update module. (jquery 1.6 or greater).
+Requires the jQuery Update module. (jquery 1.9 or greater).
 
 1. Enable the ContentTools module.
 

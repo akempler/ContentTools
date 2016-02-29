@@ -64,9 +64,13 @@ function contenttools_menu() {
  */
 function contenttools_permission() {
   return array(
-      'administer contenttools' => array(
-          'title' => t('Administer the ContentTools module'),
-      ),
+    'administer contenttools' => array(
+      'title' => t('Administer the ContentTools module'),
+    ),
+    'view contenttools nodeinfo' => array(
+      'title' => t('View node info'),
+      'description' => t('View the node info icon and the corresponding tooltip containing info about the node.'),
+    ),
   );
 }
 
@@ -132,6 +136,9 @@ function contenttools_preprocess_page(&$vars) {
   }
   else {
     // Display the node management icons.
+    drupal_add_library('system', 'ui', true);
+    drupal_add_library('system', 'ui.tooltip', true);
+
     $args = array();
     if (isset($vars['node'])) {
       $args['node'] = $vars['node'];
