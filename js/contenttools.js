@@ -16,11 +16,11 @@ jQuery(document).ready(function() {
       editor.resize('100%', viewportHeight - 80);
     });
   }
-  
-  if (jQuery("#edit-title").length > 0) {
+
+  // If the title field already has text in it scroll to the body field.
+  if ((jQuery("#edit-title").length > 0) && (jQuery("#edit-title").val().length > 0)) {
     jQuery('html, body').animate({
-      //scrollTop: $(".node-form .form-textarea-wrapper").offset().top
-      scrollTop: jQuery("#edit-title").offset().top
+      scrollTop: jQuery("#edit-body").offset().top - 80
     }, 1000);
   }
   

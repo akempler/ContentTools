@@ -27,7 +27,10 @@ The original primary tabs are still accessible via a small triangle button which
 The node palette displays some of the most commonly used node form fields in a floating palette. For example, the Publish checkbox, Promoted to Front Page, Tags field, and the Save button. This block is enabled by default on the Content Tools Configuration page. 
 
 ### Other Tweaks:
-By default drupal displays options for selecting different text formats when creating content. I find this just tends to confuse users that have pemission to create multiple formats. The module collapses the Text Formats fieldset by default. This behavior can be controlled on the module's configuration page. 
+By default drupal displays options for selecting different text formats when creating content. I find this just tends to confuse users that have pemission to create multiple formats. The module collapses the Text Formats fieldset by default. This behavior can be controlled on the module's configuration page.
+
+If the user is editing a node, automatically scroll to the top of the body field. This simplifies the content creation/editing process which is the goal with all of these tweaks.
+ 
 
 **Some caveats:**
 Since I developed this as a solution for my customers it is somewhat dependent on my toolset. Currently I've been using Twitter Bootstrap as a base theme, for both the front and backend. As such, you may need to tweak the css to get things to look correct based on what theme you are using.
