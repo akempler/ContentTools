@@ -70,4 +70,4 @@ You have two easy options for usage:
 
 ### Known Issues:
 
-If you are using the Twitter Bootstrap module, there is a known conflict between the bootsrap tooltip function and the jquery ui tooltip function. Just use the jquery ui tooltip instead and don't manually include the bootstrap tooltip js. If that is not an option let me know in the github issues and I'll create a workaround.
+If you are using the Twitter Bootstrap module, there is a known conflict between the bootsrap tooltip function and the jquery ui tooltip function. Use the jquery ui tooltip instead. If that is not an option let me know in the github issues and I'll create a workaround.

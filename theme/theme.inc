@@ -17,12 +17,11 @@ function template_preprocess_contentnav(&$vars) {
 
   if ($vars['node']) {
 
-    // TODO loop through different node types specified as book pages.
-    if (isset($vars['node']->book)) {
+    if (isset($vars['node']->book) && isset($vars['node']->book['depth'])) {
       $child_type = variable_get('book_child_type', 'book');
       if ((user_access('add content to books') || user_access('administer book outlines')) && node_access('create', $child_type) && $vars['node']->book['depth'] < MENU_MAX_DEPTH) {
       $node_options['book_page'] = l(t(''),
-        'node/add/book', array(
+        'node/add/' . str_replace('_', '-', $child_type), array(
           'query' => array('parent' => $vars['node']->book['mlid']),
           'attributes' => array(
             'title' => 'Add Child Page',

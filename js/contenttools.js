@@ -24,36 +24,50 @@ jQuery(document).ready(function() {
       scrollTop: jQuery("#edit-body").offset().top - 80
     }, 1000);
   }
-  
+
 });
 
 
 (function ($) {
   Drupal.behaviors.contenttools_global = {
     attach: function (context) {
-      
-      $('.contenttools-tooltip').tooltip({
-        
-        content: function () {
-          return $(this).attr('data-content');
-        },
-        items: "span[data-content]",
-        show: "fold",
-        close: function(event, ui)
-        {
-          ui.tooltip.hover(function()
-          {
-             $(this).stop(true).fadeTo(500, 1);
+
+      // Handle conflict between jquery ui and bootstrap tooltips.
+      // return $.fn.tooltip to previously assigned value
+      if ($.isFunction($.fn.tooltip.noConflict)) {
+        var bootstrapTooltip = $.fn.tooltip.noConflict();
+
+        // give $().bootstrapTooltip the Bootstrap functionality
+        $.fn.bootstrapTooltip = bootstrapTooltip
+
+        // now activate tooltip plugin from jQuery ui
+        $(document).tooltip();
+      }
+
+      if ($('.contenttools-tooltip').length > 0) {
+        $('.contenttools-tooltip').tooltip({
+
+          content: function () {
+            return $(this).attr('data-content');
           },
-          function()
+          items: "span[data-content]",
+          show: "fold",
+          close: function(event, ui)
           {
-             $(this).fadeOut('500', function()
-               {
-                  $(this).remove();
-               });
-            });
-         }
-      });
+            ui.tooltip.hover(function()
+            {
+              $(this).stop(true).fadeTo(500, 1);
+            },
+            function()
+            {
+              $(this).fadeOut('500', function()
+                  {
+                    $(this).remove();
+                  });
+              });
+           }
+        });
+      }
 
       // Hide the default tabs/local tasks normall displayed for example on a node page. (a triangle to expand them is provided).
       $(".admin_tabs_toggle").bind("click", function() {
@@ -189,4 +203,3 @@ jQuery(document).ready(function() {
 
 
 })(jQuery);
-
