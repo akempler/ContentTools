@@ -105,11 +105,10 @@ jQuery(document).ready(function() {
 
           var addlink = $("#addcontent");
           var position = addlink.offset();
-          //var position = addlink.position();
           top = position.top + addlink.outerHeight(true);
           left = position.left;
           $modal.css({
-              top:top + $(window).scrollTop(),
+              top:top,
               left:left + $(window).scrollLeft()
           });
         };
