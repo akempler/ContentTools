@@ -17,11 +17,12 @@ function template_preprocess_contentnav(&$vars) {
 
   if ($vars['node']) {
 
-    if (isset($vars['node']->book) && isset($vars['node']->book['depth'])) {
+    // TODO loop through different node types specified as book pages.
+    if (isset($vars['node']->book)) {
       $child_type = variable_get('book_child_type', 'book');
       if ((user_access('add content to books') || user_access('administer book outlines')) && node_access('create', $child_type) && $vars['node']->book['depth'] < MENU_MAX_DEPTH) {
       $node_options['book_page'] = l(t(''),
-        'node/add/' . str_replace('_', '-', $child_type), array(
+        'node/add/book', array(
           'query' => array('parent' => $vars['node']->book['mlid']),
           'attributes' => array(
             'title' => 'Add Child Page',
@@ -107,7 +108,8 @@ function template_preprocess_contentcreate_icon(&$vars) {
   // TODO Use book module to get the book types.
   if (isset($vars['node']) && isset($vars['node']->book)) {
     $child_type = variable_get('book_child_type', 'book');
-    if ((user_access('add content to books') || user_access('administer book outlines')) && node_access('create', $child_type) && $vars['node']->book['depth'] < MENU_MAX_DEPTH) {
+    $depth = isset($vars['node']->book['depth']) ? $vars['node']->book['depth'] : 1;
+    if ((user_access('add content to books') || user_access('administer book outlines')) && node_access('create', $child_type) && $depth < MENU_MAX_DEPTH) {
       $create['book_page'] = '<p>' . l(t('Child Book Page'),
         'node/add/book', array(
           'query' => array('parent' => $vars['node']->book['mlid']),

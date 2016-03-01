@@ -33,15 +33,17 @@ jQuery(document).ready(function() {
     attach: function (context) {
 
       // Handle conflict between jquery ui and bootstrap tooltips.
+      // If bootstrap tooltip is installed 
       // return $.fn.tooltip to previously assigned value
-      if ($.isFunction($.fn.tooltip.noConflict)) {
+      if ($.isFunction($.fn.tooltip) && $.isFunction($.fn.tooltip.noConflict)) {
         var bootstrapTooltip = $.fn.tooltip.noConflict();
 
         // give $().bootstrapTooltip the Bootstrap functionality
         $.fn.bootstrapTooltip = bootstrapTooltip
 
         // now activate tooltip plugin from jQuery ui
-        $(document).tooltip();
+        //$(document).tooltip();
+        // activating it below with additional details.
       }
 
       if ($('.contenttools-tooltip').length > 0) {
@@ -77,12 +79,10 @@ jQuery(document).ready(function() {
       // The following adjustments are for when creating/editing a node, which is when the content tools palette is active.s
       if ((typeof Drupal.settings.contenttools.contenttoolsactive != 'undefined') && (Drupal.settings.contenttools.contenttoolsactive)) {
 
-        // TODO handle this field not existing.
-        // Collapse the filter options under textareas.
         if ($('#filterexpand').length == 0) {
-          $('fieldset.filter-wrapper').prepend('<img id="filterexpand" src="' + Drupal.settings.contenttools.modulepath + '/images/arrow-asc.png" /> Text Formats:')
+          $('fieldset.filter-wrapper').prepend('<img id="filterexpand" src="' + Drupal.settings.basePath + Drupal.settings.contenttools.modulepath + '/images/arrow-asc.png" /> Text Formats:')
           $('fieldset.filter-wrapper').find("div").eq(0).toggle();
-          $("fieldset.filter-wrapper").bind("click", function() {
+          $("#filterexpand").bind("click", function() {
             //$('fieldset.filter-wrapper div.panel-body').slideToggle(400);
             $('fieldset.filter-wrapper').find("div").eq(0).slideToggle(400);
           });
