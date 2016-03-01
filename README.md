@@ -24,13 +24,15 @@ I find the primary tabs awkward. Especially because with other modules installed
 The original primary tabs are still accessible via a small triangle button which toggles their visibility.
 
 ### Node Palette:
-The node palette displays some of the most commonly used node form fields in a floating palette. For example, the Publish checkbox, Promoted to Front Page, Tags field, and the Save button. This block is enabled by default on the Content Tools Configuration page. 
+The node palette displays some of the most commonly used node form fields in a floating palette. For example, the Publish checkbox, Promoted to Front Page, Tags field, and the Save button. This block is enabled by default on the Content Tools Configuration page.
+
+![okayNav Demo](https://raw.githubusercontent.com/akempler/doctools/master/screens.gif)
 
 ### Other Tweaks:
 By default drupal displays options for selecting different text formats when creating content. I find this just tends to confuse users that have pemission to create multiple formats. The module collapses the Text Formats fieldset by default. This behavior can be controlled on the module's configuration page.
 
 If the user is editing a node, automatically scroll to the top of the body field. This simplifies the content creation/editing process which is the goal with all of these tweaks.
- 
+
 
 **Some caveats:**
 Since I developed this as a solution for my customers it is somewhat dependent on my toolset. Currently I've been using Twitter Bootstrap as a base theme, for both the front and backend. As such, you may need to tweak the css to get things to look correct based on what theme you are using.
@@ -41,8 +43,8 @@ The node palette form isn't really able to be overridden at this point because o
 Tags: Currently this only gets displayed in the palette if you've enabled the existing Drupal default tags field for your node type. If you create your own it won't recognize it (it only looks for a field name of field_tags.
 
 ### Adding links/icons to the Node Tools
-Override template_preprocess_contentnav(&$vars) located in the theme.inc file. This will give you access to an array of $vars['node_options']. 
-For example: 
+Override template_preprocess_contentnav(&$vars) located in the theme.inc file. This will give you access to an array of $vars['node_options'].
+For example:
 ```
 function booktools_preprocess_contentnav(&$vars) {
   var_dump($vars['node_options']);
