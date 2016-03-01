@@ -28,6 +28,8 @@ The node palette displays some of the most commonly used node form fields in a f
 
 ![okayNav Demo](https://raw.githubusercontent.com/akempler/doctools/master/screens.gif)
 
+![okayNav Demo](https://raw.githubusercontent.com/akempler/ContentTools/master/screens.gif)
+
 ### Other Tweaks:
 By default drupal displays options for selecting different text formats when creating content. I find this just tends to confuse users that have pemission to create multiple formats. The module collapses the Text Formats fieldset by default. This behavior can be controlled on the module's configuration page.
 
